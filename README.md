@@ -1,26 +1,50 @@
 # Web services php
 
-Dans WebServicesPhp :
+## Dans WebServicesPhp
+
+## Dépendances
+
+```sh
+composer install
+npm i
+npm run dev
+```
 
 export de la base de données dans export.sql
+créer base de données "mi5" dans phpmyadmin et verifier .env URL
+
+mettre le nom de votre BDD et vos identifiants
+
+```env
+DATABASE_URL="mysql://username:password@localhost:80/database?serverVersion=5.7"
+```
+
+si nouveau projet, installer Api platform
 
 ```sh
 composer req api
 ```
 
-Dans WebServicesSoapClient :
+## Importer les entitées
 
 ```sh
-composer install
-npm i
+php bin/console doctrine:mapping:import "App\Entity" annotation --path=src/Entity
 ```
-
-créer base de données "mi07" dans phpmyadmin et changer .env URL
 
 ```sh
-npm run dev php bin/console doctrine:migrations:migrate
-php bin/console doctrine:fixtures:load;
+php bin/console make:entity --regenerate App
 ```
+
+## Démarrage de l'application et d'API platform
+
+```sh
+symfony server:start -no-tls
+```
+
+<http://localhost:8000/>
+<http://127.0.0.1:8000/api>
+
+## Autres
 
 Soap Entities : WebServices_PHP/Src/Soap
 Soap Controller : WebServices_PHP/src/controller/Soap/

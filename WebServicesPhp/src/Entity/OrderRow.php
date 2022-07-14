@@ -4,14 +4,20 @@ namespace App\Entity;
 
 use App\Repository\OrderRowRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
+ * @ApiResource
+ * @ApiFilter(OrderFilter::class, properties={"quantity", "price"})
  * @ORM\Entity(repositoryClass=OrderRowRepository::class)
  */
 class OrderRow
 {
 
-    /**
+    /**     
      * @ORM\Column(type="integer", nullable=true)
      */
     private $quantity;

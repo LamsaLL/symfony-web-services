@@ -6,8 +6,21 @@ use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Core\Annotation\ApiFilter;
 /**
+ * @ApiResource
+ * @ApiFilter(OrderFilter::class, properties={"date"})
+ * @ApiFilter(ExistsFilter::class, properties={"status"})
+ * @ApiFilter(
+ *  SearchFilter::class, properties={
+ *    "user.email": "exact",
+ *    "status": "exact",
+ *  })
  * @ORM\Entity(repositoryClass=OrderRepository::class)
  * @ORM\Table(name="`order`")
  */
@@ -31,12 +44,14 @@ class Order
   private $status;
 
   /**
+   * @ApiSubresource
    * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
    * @ORM\JoinColumn(nullable=false)
    */
   private $user;
 
   /**
+   * @ApiSubresource
    * @ORM\OneToMany(targetEntity=OrderRow::class, mappedBy="orderItem", orphanRemoval=true, cascade={"persist"})
    */
   private $orderRows;

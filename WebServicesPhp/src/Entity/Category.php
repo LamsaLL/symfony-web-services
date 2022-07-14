@@ -6,8 +6,11 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 
 /**
+ * @ApiResource
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  */
 class Category
@@ -25,6 +28,7 @@ class Category
     private $name;
 
     /**
+     * @ApiSubresource
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category")
      */
     private $products;

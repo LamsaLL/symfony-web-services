@@ -4,8 +4,19 @@ namespace App\Entity;
 
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 /**
+ * @ApiResource
+ * @ApiFilter(NumericFilter::class, properties={"id"})
+ * @ApiFilter(SearchFilter::class, properties={
+ *  "name": "partial",
+ *  "text": "partial",
+ *  "price": "exact",
+ * })
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
 class Product
