@@ -19,11 +19,18 @@ mettre le nom de votre BDD et vos identifiants
 DATABASE_URL="mysql://username:password@localhost:80/database?serverVersion=5.7"
 ```
 
-si nouveau projet, installer Api platform
+si nouveau projet, installer Api platform et laminas
 
 ```sh
 composer req api
+composer require laminas/laminas-soap
 ```
+
+Generation WSDL
+<http://localhost:8000/soapgen>
+
+Acces au WSDL
+<http://localhost:8000/soap?wsdl>
 
 ## Importer les entitées
 
