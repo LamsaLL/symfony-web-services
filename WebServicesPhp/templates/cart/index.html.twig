@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	Panier
+{% endblock %}
+{% block body %}
+	<div class="card col-md-12">
+		<div class="card-header">
+			<h1>
+				<i class="fas fa-shopping-cart"></i>
+				{% if products|length > 0 %}
+					{{ nbProducts }}
+					Produit(s) :
+					<b>{{ total }}
+						€</b>
+				{% else %}
+					<b>Votre panier est vide</b>
+				{% endif %}
+			</h1>
+			<div class="col-md-12 btn-group btn-group-lg" role="group">
+				<a class="btn btn-primary" href="{{ path('shop_index') }}">
+					Continuer les Courses
+				</a>
+				{% if products|length > 0 %}
+					<a class="btn btn-primary" href="{{ path('cart_validation') }}">
+						Passer la commande
+					</a>
+				{% endif %}
+			</div>
+			<div class="card-body">
+				{% if products|length > 0 %}
+					<div class="row">
+
+						<table class="table table-striped table-sm table-hover">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Produit</th>
+									<th class="text-right">Prix</th>
+									<th>Quantite</th>
+									<th class="text-right">Total</th>
+									<th>Supprimer</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for product in products  %}
+									<tr>
+										<td>
+											<img src={{ asset(product.product.image) }} class="cart-img-produit" alt="Pêche">
+										</td>
+										<td>
+											<a href={{ path('shop_department', { categoryId: product.product.getCategory().getId() } ) }}>
+												<b>{{ product.product.name }}</b>
+											</a>
+										</td>
+										<td class="text-right">
+											{{ product.product.price }}
+											€
+										</td>
+										<td>
+											<a href={{path("cart_remove",{productId: product.product.id} )}}>
+												<i class="fas fa-minus-square text"></i>
+											</a>
+											{{ product.quantity }}
+											<a href={{path("cart_add",{productId: product.product.id} )}}>
+												<i class="fas fa-plus-square text-muted"></i>
+											</a>
+										</td>
+										<td class="text-right">
+											{{ product.product.price * product.quantity }}
+											€
+										</td>
+										<td>
+											<a href={{ path("cart_delete", {productId: product.product.id} ) }}>
+												<i class="fas fa-trash text-muted" data-toggle="tooltip" title={{ "Supprimer " ~ product.product.name }} data-placement="right" data-html="true"></i>
+											</a>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+							<thead>
+								<tr>
+									<th class="text-right" colspan="4">
+										Total
+									</th>
+									<th class="text-right">
+										{{ total }}
+										€
+									</th>
+									<th>
+										<a href={{ path('cart_clear') }}>
+											<i class="fas fa-trash text-muted" data-toggle="tooltip" title="Vider le Panier" data-placement="right" data-html="true"></i>
+										</a>
+									</th>
+								</tr>
+							</thead>
+						{% endif %}
+					</table>
+				</div>
+			</div>
+			<div class="card-body"></div>
+		</div>
+	</div>
+{% endblock %}

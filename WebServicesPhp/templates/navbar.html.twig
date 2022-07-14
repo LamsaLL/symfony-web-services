@@ -1,0 +1,113 @@
+{% set route = app.request.attributes.get('_route') %}
+{% set params = app.request.attributes.get('_route_params') %}
+{% set disableIfNotConnected = app.user ? '' : 'disabled' %}
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+	<a class="navbar-brand" href="{{ path('index') }}">
+		<i class="fas fa-home"></i>
+		Démo SF
+	</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item">
+				<a class="nav-link" href="{{ path('shop_index') }}">
+					<i class="fas fa-store"></i>
+					{{ 'default.navbar.shop'|trans }}
+				</a>
+			</li>
+			<li class="nav-item">{{ render(controller('App\\Controller\\CartController::nbProducts')) }}</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{{ path('contact_index') }}">
+					<i class="fas fa-comments"></i>
+					{{ 'default.navbar.contact'|trans }}
+				</a>
+			</li>
+			<li class="nav-item dropdown">
+				<span class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{% if app.user %}
+						<i class="fas fa-user-check"></i>
+						{{ app.user.name }}
+					{% else %}
+						<i class="fas fa-user"></i>
+						{{ 'default.navbar.connexion'|trans }}
+					{% endif %}
+				</span>
+				<div class="dropdown-menu" aria-labelledby="dropdown01">
+					<a class="dropdown-item" href="{{ path('app_login') }}">{{ 'default.navbar.register'|trans }}</a>
+					<a class="dropdown-item {{ disableIfNotConnected }}" href="{{ path('user_show') }}">
+						{{ 'default.navbar.myAccount'|trans }}
+					</a>
+					<a class="dropdown-item {{ disableIfNotConnected }}" href="{{ path('user_orders') }}">
+						{{ 'default.navbar.myOrders'|trans }}
+					</a>
+					<a class="dropdown-item {{ disableIfNotConnected }}" href="{{ path('app_logout') }}">
+						{{ 'default.navbar.logout'|trans }}
+					</a>
+				</div>
+			</li>
+			{% if is_granted('ROLE_ADMIN') %}
+				<li class="nav-item" data-toggle="tooltip" title="Ne devra être visible que pour l'Admin" data-placement="right" data-html="true">
+					<a class="nav-link" href="{{ path('user_index') }}">
+						<i class="fas fa-tools mx-2"></i>
+						{{ 'default.navbar.backOffice'|trans }}
+					</a>
+				</li>
+			{% endif %}
+		</ul>
+		<form class="form-inline my-2 my-lg-0">
+			<input class="form-control mr-sm-2" name="searchString" id="searchString" type="text" placeholder="Chercher Produits..." aria-label="Search"/>
+			<button class="btn btn-secondary my-2 my-sm-0" id="searchButton">
+				<i class="fas fa-search"></i>
+			</button>
+		</form>
+		<ul class="navbar-nav my-0">
+			<li class="nav-item dropdown">
+				<span class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					EUR
+				</span>
+				<div class="dropdown-menu" aria-labelledby="dropdown02" style="min-width: 5rem;">
+					<a class="dropdown-item" href="">
+						CAD
+					</a>
+					<a class="dropdown-item" href="">
+						USD
+					</a>
+					<a class="dropdown-item" href="">
+						GBP
+					</a>
+					<a class="dropdown-item" href="">
+						PHP
+					</a>
+					<a class="dropdown-item" href="">
+						IDR
+					</a>
+				</div>
+			</li>
+		</ul>
+		<ul class="navbar-nav my-0">
+			<li class="nav-item dropdown">
+				<span class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{% if app.request.attributes.get('_locale') == 'fr' %}
+						<img src="{{asset('images/locale/fr.png')}}" alt="Fr"/>
+					{% else %}
+						<img src="{{asset('images/locale/en.png')}}" alt="En"/>
+					{% endif %}
+				</span>
+				<div class="dropdown-menu" aria-labelledby="dropdown03" style="min-width: 5rem;">
+					{% if app.request.attributes.get('_locale') == 'fr' %}
+						<a class="dropdown-item" href="{{ path(route, params | merge({'_locale': 'en' })) }}">
+							<img src="{{asset('images/locale/en.png')}}" alt="Fr"/>
+						</a>
+					{% else %}
+						<a class="dropdown-item" href="{{ path(route, params | merge({'_locale': 'fr' })) }}">
+							<img src="{{asset('images/locale/fr.png')}}" alt="En"/>
+						</a>
+					{% endif %}
+				</div>
+			</li>
+		</ul>
+	</div>
+</nav>
