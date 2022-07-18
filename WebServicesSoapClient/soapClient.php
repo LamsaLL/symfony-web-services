@@ -10,22 +10,23 @@ function displayRequestResponse($soapClient)
 }
 
 
+require('ProductSoap.php');
 use \App\Soap\ProductSoap;
+require('CategorySoap.php');
 use \App\Soap\CategorySoap;
-
 
 $soapClient = null;
 try {
 
     ini_set("soap.wsdl_cache_enabled", "0");
 
-    $opts = array(
-        'http' => array(
-            'user_agent' => 'PHPSoapClient',
-            //'header' => 'Content-Type: text/xml'
-        )
-    );
-    $context = stream_context_create($opts);
+    // $opts = array(
+    //     'http' => array(
+    //         'user_agent' => 'PHPSoapClient',
+    //         //'header' => 'Content-Type: text/xml'
+    //     )
+    // );
+    // $context = stream_context_create($opts);
 
     $options = array(
         'trace' => 1,
@@ -33,19 +34,19 @@ try {
         'connection_timeout' => 180,
         'encoding' => 'UTF-8',
         'soap_version' => SOAP_1_1,
-        'stream_context' => $context,
+        // 'stream_context' => $context,
         'cache_wsdl' => WSDL_CACHE_NONE/*,
 		'use' => SOAP_LITERAL,
 		'style' => SOAP_DOCUMENT*/
     );
 
-    $soapClient =  new \SoapClient('http://localhost:8001/soap?wsdl', $options);
+    $soapClient =  new \SoapClient('http://localhost:8000/soap?wsdl', $options);
     //header('Content-Type: text/xml');
     //$soapClient->__setSoapHeaders(new SoapHeader('Content-Type','text/xml'));
 
     $functions = $soapClient->__getFunctions();
     var_dump($functions);
-    displayRequestResponse($soapClient);
+    // displayRequestResponse($soapClient);
 
     //header('Content-Type: text/xml');
     //$soapClient->__setSoapHeaders(new SoapHeader('Content-Type','text/xml'));
@@ -62,33 +63,26 @@ try {
     echo '<p>' . $result . '</p>';
     displayRequestResponse($soapClient);
 
-     //Function soap get article by Id
-     echo '<p> Retrouver un article par son id :</p>';
-     $result = $soapClient->getArticleById(100);
-     var_dump($result);
-
-     echo "<p> Libelle de l'article  : " . $result->libelle . "</p>";
-
-
-     //Function soap get Categorie of an article
-     echo "<p> Retrouver la catégorie d'un article</p>";
-     $result = $soapClient->getCategorieByArticleId(100);
-     var_dump($result);
-
-     echo "<p> Libelle de la catégorie  : " . $result->libelle . "</p>";
-
-     displayRequestResponse($soapClient);
-
-
-    //Function soap get all article
-    // echo '<p> Retrouver tous les articles de la base:</p>';
-    // $result = $soapClient->getAllArticles();
-    // var_dump($result);
-    // displayRequestResponse($soapClient);
-
-   
-    echo '<p>' . $result->id . ' : ' . $result->libelle . '</p>';
+    echo '<p> Retrouver un article par son id :</p>';
+    $prod = new ProductSoap(1, 'Pomme', 'Elle est bonne pour la tienne', 'images/pommes.jpg', '3.42');
+    echo '<p>'.var_dump($prod).'</p>';
+    $result = $soapClient->getProductById(1);
+    var_dump($result);
+    echo "<p> Nom de l'article  : " . $result->name . "</p>";
     displayRequestResponse($soapClient);
+
+    //Function soap get Categorie of an article
+    echo "<p> Retrouver la catégorie d'un article</p>";
+    $result = $soapClient->getCategoryByProductId(1);
+    var_dump($result);
+    echo "<p> Nom de la catégorie  : " . $result->name . "</p>";
+    displayRequestResponse($soapClient);
+
+    echo '<p> Retrouver tous les articles de la base:</p>';
+    $result = $soapClient->getAllProducts();
+    var_dump($result);
+    displayRequestResponse($soapClient);
+
 } catch (SoapFault $fault) {
     displayRequestResponse($soapClient);
     // <xmp> tag displays xml output in html

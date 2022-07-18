@@ -56,44 +56,40 @@ class SoapOperations
     }
 
     /**
-     * Récupère le libellé d'un article dont on connaît l'id
+     * Récupère le libellé d'un produit dont on connaît l'id
      * @param int $id
-     * @return \App\Soap\ProductSoap Le secteur avec l'id et le libellé
+     * @return \App\Soap\ProductSoap Le produit avec l'id  le libellé, le texte, le prix et l'image
      */
-    public function getProductById($id)
+    public function getProductById($id) : ProductSoap
     {
-        $article = $this->doct->getRepository(\App\Entity\Product::class)->find($id);
-        $articleSoap = new ProductSoap($article->getId(), $article->getLibelle(), $article->getTexte(), $article->getVisuel(), $article->getPrix());
-        return $articleSoap;
+        $product = $this->doct->getRepository(\App\Entity\Product::class)->find($id);
+        return new ProductSoap($product->getId(), $product->getName(), $product->getText(), $product->getPrice(), $product->getPrice());
     }
 
-    // /**
-    //  * Retourne tous les articles
-    //  * @param int $id
-    //  * @return \App\Soap\ProductSoap Le secteur avec l'id et le libellé
-    //  */
-    // public function getAllProducts()
-    // {
-    //     $articles = $this->doct->getRepository(\App\Entity\Product::class)->findAll();
+    /**
+     * Retourne tous les produits
+     * @return \App\Soap\ProductSoap Les produits
+     */
+    public function getAllProducts(): Array
+    {
+        $products = $this->doct->getRepository(\App\Entity\Product::class)->findAll();
+        $productsSoap = [];
+        foreach ($products as $product) {
+            $productsSoap[] = new ProductSoap($product->getId(), $product->getName(), $product->getText(), $product->getImage(), $product->getPrice());
+        }
+        return $productsSoap;
+    }
 
-    //     $articlesSoap = [];
-    //     foreach ($articles as $article) {
-    //         array_push(new ProductSoap($article->getId(), $article->getLibelle(), $article->getTexte(), $article->getVisuel(), $article->getPrix(), $article->getCategory()));
-    //     }
-    //     return $articlesSoap;
-    // }
 
     /**
-     * retourne tous les articles d'une catégorie donnée
+     * retourne tous les produits d'une catégorie donnée
      * @param int $id
-     * @return \App\Soap\CategorySoap Le secteur avec l'id et le libellé
+     * @return \App\Soap\CategorySoap La categorie avec l'id, le libellé le texte et l'image
      */
-    public function getCategoryByProductId($id)
+    public function getCategoryByProductId($id) : CategorySoap
     {
-        $article = $this->doct->getRepository(\App\Entity\Product::class)->find($id);
-        $categorie = $article->getCategory();
-        $categorieSoap = new CategorySoap($categorie->getId(), $categorie->getLibelle(), $categorie->getVisuel(), $categorie->getTexte());
-
-        return $categorieSoap;
+        $product = $this->doct->getRepository(\App\Entity\Product::class)->find($id);
+        $category = $product->getCategory();
+        return new CategorySoap($category->getId(), $category->getName(), $category->getText(), $category->getImage());
     }
  }
