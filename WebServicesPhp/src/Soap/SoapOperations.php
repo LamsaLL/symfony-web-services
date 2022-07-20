@@ -63,7 +63,7 @@ class SoapOperations
     public function getProductById($id) : ProductSoap
     {
         $product = $this->doct->getRepository(\App\Entity\Product::class)->find($id);
-        return new ProductSoap($product->getId(), $product->getName(), $product->getText(), $product->getPrice(), $product->getPrice());
+        return new ProductSoap($product->getId(), $product->getName(), $product->getText(), $product->getImage(), $product->getPrice());
     }
 
     /**

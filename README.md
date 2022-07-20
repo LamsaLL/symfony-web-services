@@ -7,19 +7,17 @@
 ```sh
 composer install
 npm i
-npm run dev
 ```
 
-export de la base de données dans export.sql
-créer base de données "mi5" dans phpmyadmin et verifier .env URL
+Export de la base de données dans le fichier export.sql
 
-mettre le nom de votre BDD et vos identifiants
+Mettre le nom de votre BDD et vos identifiants et verifier l'url dans le fichier .env
 
 ```env
 DATABASE_URL="mysql://username:password@localhost:80/database?serverVersion=5.7"
 ```
 
-si nouveau projet, installer Api platform et laminas
+Si nouveau projet, installer Api platform et laminas
 
 ```sh
 composer req api
@@ -53,8 +51,8 @@ symfony server:start -no-tls
 
 ## Autres
 
-Soap Entities : WebServices_PHP/Src/Soap
+Soap Entities et operations : WebServices_PHP/Src/Soap
 Soap Controller : WebServices_PHP/src/controller/Soap/
-Soap Client : WebServices_PHP_Client/
+Soap Client : WebServicesSoapClient/
 
 Annotations pour api-platform : src/Entity

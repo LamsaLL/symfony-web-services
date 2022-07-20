@@ -63,22 +63,22 @@ try {
     echo '<p>' . $result . '</p>';
     displayRequestResponse($soapClient);
 
-    echo '<p> Retrouver un article par son id :</p>';
+    echo '<p>Get product by id</p>';
     $prod = new ProductSoap(1, 'Pomme', 'Elle est bonne pour la tienne', 'images/pommes.jpg', '3.42');
     echo '<p>'.var_dump($prod).'</p>';
     $result = $soapClient->getProductById(1);
     var_dump($result);
-    echo "<p> Nom de l'article  : " . $result->name . "</p>";
+    echo "<p> Product name: " . $result->name . "</p>";
     displayRequestResponse($soapClient);
 
     //Function soap get Categorie of an article
-    echo "<p> Retrouver la catégorie d'un article</p>";
+    echo "<p>Get category by product Id</p>";
     $result = $soapClient->getCategoryByProductId(1);
     var_dump($result);
-    echo "<p> Nom de la catégorie  : " . $result->name . "</p>";
+    echo "<p>Category Name: " . $result->name . "</p>";
     displayRequestResponse($soapClient);
 
-    echo '<p> Retrouver tous les articles de la base:</p>';
+    echo '<p>Get all products</p>';
     $result = $soapClient->getAllProducts();
     var_dump($result);
     displayRequestResponse($soapClient);
